@@ -1,0 +1,12 @@
+/home/sun/Desktop/mine/rust-git/rust-fltk/target/debug/build/fltk-sys-fe5fccfccb53fc15/build_script_main-fe5fccfccb53fc15.d: /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/main.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/android.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/bundled.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/emscripten.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/link.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/pkg_config.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/source.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/utils.rs
+
+/home/sun/Desktop/mine/rust-git/rust-fltk/target/debug/build/fltk-sys-fe5fccfccb53fc15/build_script_main-fe5fccfccb53fc15: /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/main.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/android.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/bundled.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/emscripten.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/link.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/pkg_config.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/source.rs /home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/utils.rs
+
+/home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/main.rs:
+/home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/android.rs:
+/home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/bundled.rs:
+/home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/emscripten.rs:
+/home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/link.rs:
+/home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/pkg_config.rs:
+/home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/source.rs:
+/home/sun/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/fltk-sys-1.5.14/build/utils.rs:
