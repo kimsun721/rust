@@ -2759,6 +2759,7 @@ name = "rust-keyboard"
 version = "0.1.0"
 dependencies = [
  "evdev",
+ "gif",
  "iced",
  "iced_gif",
 ]
