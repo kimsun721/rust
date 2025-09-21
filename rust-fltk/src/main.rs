@@ -2,7 +2,7 @@ use std::path::Path;
 
 use evdev::{Device, EventType};
 use fltk::{
-    app,
+    app::{self, add_idle3},
     frame::Frame,
     image::{AnimGifImage, AnimGifImageFlags},
     prelude::*,
@@ -10,8 +10,10 @@ use fltk::{
 };
 
 fn main() {
+    let mut gif_speed: f64 = 0.0;
+
     std::thread::spawn(move || {
-        let path = Path::new("/dev/input/event20");
+        let path = Path::new("/dev/input/event8");
         let mut device = Device::open(path).expect("Failed to open device");
         println!(
             "Listening for keyboard events on {}...",
@@ -19,15 +21,18 @@ fn main() {
         );
 
         loop {
+            let mut cnt: f64 = 0.0;
             for ev in device.fetch_events().unwrap() {
                 if ev.event_type() == EventType::KEY && ev.value() == 1 {
                     println!("{:?}", ev.code());
+                    cnt += 1.0;
+                    gif_speed += cnt;
                 }
             }
         }
     });
 
-    let app = app::App::default();
+    let a = app::App::default();
     let mut wind = Window::new(100, 100, 1000, 1000, "tlqkf");
 
     let mut frame = Frame::new(0, 0, 200, 200, "gif");
@@ -47,5 +52,5 @@ fn main() {
         app::sleep(0.1);
     });
 
-    app.run().unwrap();
+    a.run().unwrap();
 }
