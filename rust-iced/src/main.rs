@@ -1,8 +1,11 @@
 use ::image::codecs::gif::GifDecoder;
 use ::image::{AnimationDecoder, Frame};
 use evdev::{Device, EventType};
+use iced::border::Radius;
 use iced::theme::Palette;
-use iced::{Background, Color, Theme};
+use iced::widget::{button, column, horizontal_space, row, text};
+use iced::window::Id;
+use iced::{Background, Border, Color, Length, Pixels, Point, Theme, color, window};
 use iced::{
     Element, Size, Subscription, Task,
     futures::{
@@ -28,12 +31,15 @@ struct AppState {
     frames: Vec<Frame>,
     frame_idx: usize,
     playing: bool,
+    gif_path: PathBuf,
 }
 
 // type GifFrames = Vec<(Vec<u8>, u64, u16, u16)>;
 
 impl Default for AppState {
     fn default() -> Self {
+        window::Action::Move(Id::unique(), Point { x: 1.0, y: 1000.0 });
+        let gif_path = PathBuf::from("/home/sun/Pictures/totoro-transparent.gif");
         let frames = AppState::load_gif();
         AppState {
             cnt: 0,
@@ -41,14 +47,16 @@ impl Default for AppState {
             frames: frames,
             frame_idx: 0,
             playing: true,
+            gif_path: gif_path,
         }
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum Message {
     Pressed(u16),
     NextFrame,
+    OpenSetting,
 }
 
 impl AppState {
@@ -66,37 +74,9 @@ impl AppState {
 
                 Task::none()
             }
+            Message::OpenSetting => Task::none(),
         }
     }
-
-    fn view(state: &'_ AppState) -> Element<'_, Message> {
-        let frames = &state.frames;
-        let frame = &frames[state.frame_idx];
-        println!("{:?}", frames.len());
-        let delay = frame.delay().numer_denom_ms().0;
-        let buffer = frame.buffer();
-        let (w, h) = buffer.dimensions();
-        let rgba = buffer.as_raw().clone();
-        let handle = image::Handle::from_rgba(w, h, rgba);
-        // let img = image::Image::new(a);
-        let tlqkf = image::Handle::from_path("/home/sun/Pictures/7et7kdy2mdl41.jpg");
-        // column![
-        //     text(format!(
-        //         "keyboard pressed : {:?}, total : {:?}",
-        //         evdev::KeyCode::new(state.pressed),
-        //         state.cnt
-        //     )),
-        //     image::Image::new(handle)
-        // ]
-        // .into()
-        container(image::Image::new(handle))
-            .style(|_theme| container::background(Background::Color(Color::TRANSPARENT)))
-            .into()
-        // container(image::Image::new(tlqkf))
-        //     .style(container::transparent)
-        //     .into()
-    }
-
     // I hate fucking subscription because iced doc is suck
     fn subscription(&self) -> Subscription<Message> {
         Subscription::run(|| {
@@ -137,10 +117,9 @@ impl AppState {
     }
 
     fn load_gif() -> Vec<Frame> {
-        let path = PathBuf::from("/home/sun/Downloads/keyboard-type-cat.gif");
+        let path = PathBuf::from("/home/sun/Pictures/bongo-cat-transparent.gif");
         let file = File::open(path).unwrap();
         let reader = BufReader::new(file);
-
         let decoder = GifDecoder::new(reader).unwrap();
         let frames = decoder.into_frames().collect_frames().unwrap();
 
@@ -157,13 +136,13 @@ impl AppState {
 
     fn window_settings() -> iced::window::Settings {
         iced::window::Settings {
-            position: Position::Centered,
-            size: Size::new(300.0, 300.0),
+            position: Position::Specific(Point::new(1000.0, 0.0)),
+            size: Size::new(150.0, 300.0),
             transparent: true,
             decorations: false,
             resizable: false,
             level: Level::AlwaysOnTop,
-            exit_on_close_request: true,
+            exit_on_close_request: false,
             ..Default::default()
         }
     }
@@ -189,6 +168,70 @@ impl AppState {
                 ..Palette::DARK
             },
         )
+    }
+
+    fn view(state: &'_ AppState) -> Element<'_, Message> {
+        let frames = &state.frames;
+        let frame = &frames[state.frame_idx];
+        let delay = frame.delay().numer_denom_ms().0;
+        let buffer = frame.buffer();
+        let (w, h) = buffer.dimensions();
+        let rgba = buffer.as_raw().clone();
+        let handle = image::Handle::from_rgba(w, h, rgba);
+
+        // column![
+        // text(format!(
+        //     "keyboard pressed : {:?}, total : {:?}",
+        //     evdev::KeyCode::new(state.pressed),
+        //     state.cnt
+        // )),
+        //     image::Image::new(handle)
+        // ]
+        // .into()
+
+        let k = format!(" {:?} ", state.cnt);
+
+        let content = row![
+            text(k)
+                .size(21.0)
+                .style(|_theme| iced::widget::text::Style {
+                    color: Some(iced::Color::BLACK)
+                }),
+            horizontal_space(),
+            button("SET")
+                .on_press(Message::OpenSetting)
+                .style(|_theme, _status| button::Style {
+                    background: Some(Background::Color(Color::from_rgb(160.0, 160.0, 160.0,))),
+                    text_color: Color::BLACK,
+                    ..Default::default()
+                })
+        ];
+
+        column![
+            image::Image::new(handle),
+            container(content).style(|_| {
+                iced::widget::container::Style {
+                    background: Some(iced::Background::Color(iced::Color::from_rgb(
+                        160.0, 160.0, 160.0,
+                    ))),
+                    border: Border {
+                        color: Color::from_rgb(10.0, 10.0, 20.0),
+                        width: 3.0,
+                        radius: Radius {
+                            top_left: 0.2,
+                            top_right: 0.2,
+                            bottom_right: 0.2,
+                            bottom_left: 0.2,
+                        },
+                    },
+                    ..Default::default()
+                }
+            })
+        ]
+        .into()
+        // container(image::Image::new(tlqkf))
+        //     .style(container::transparent)
+        //     .into()
     }
 }
 
