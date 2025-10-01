@@ -4,8 +4,7 @@ use evdev::{Device, EventType};
 use iced::border::Radius;
 use iced::theme::Palette;
 use iced::widget::{button, column, horizontal_space, row, text};
-use iced::window::Id;
-use iced::{Background, Border, Color, Length, Pixels, Point, Theme, color, window};
+use iced::{Background, Border, Color, Length, Point, Theme};
 use iced::{
     Element, Size, Subscription, Task,
     futures::{
@@ -30,24 +29,24 @@ struct AppState {
     pressed: u16,
     frames: Vec<Frame>,
     frame_idx: usize,
-    playing: bool,
-    gif_path: PathBuf,
+    // playing: bool,
+    // gif_path: PathBuf,
 }
 
 // type GifFrames = Vec<(Vec<u8>, u64, u16, u16)>;
 
 impl Default for AppState {
     fn default() -> Self {
-        window::Action::Move(Id::unique(), Point { x: 1.0, y: 1000.0 });
-        let gif_path = PathBuf::from("/home/sun/Pictures/totoro-transparent.gif");
+        // window::Action::Move(Id::unique(), Point { x: 1.0, y: 1000.0 });
+        // let gif_path = PathBuf::from("/home/sun/Pictures/totoro-transparent.gif");
         let frames = AppState::load_gif();
         AppState {
             cnt: 0,
             pressed: 0,
             frames: frames,
             frame_idx: 0,
-            playing: true,
-            gif_path: gif_path,
+            // playing: true,
+            // gif_path: gif_path,
         }
     }
 }
@@ -77,7 +76,7 @@ impl AppState {
             Message::OpenSetting => Task::none(),
         }
     }
-    // I hate fucking subscription because iced doc is suck
+
     fn subscription(&self) -> Subscription<Message> {
         Subscription::run(|| {
             channel(1, |mut output: Sender<Message>| async move {
@@ -117,7 +116,8 @@ impl AppState {
     }
 
     fn load_gif() -> Vec<Frame> {
-        let path = PathBuf::from("/home/sun/Pictures/bongo-cat-transparent.gif");
+        // let path = PathBuf::from("/home/sun/Pictures/bongo-cat-transparent.gif");
+        let path = PathBuf::from("/home/sun/Downloads/keyboard-type-cat.gif");
         let file = File::open(path).unwrap();
         let reader = BufReader::new(file);
         let decoder = GifDecoder::new(reader).unwrap();
@@ -131,13 +131,14 @@ impl AppState {
 
         //     frames.push((rgba, dur_ms, w, h));
         // }
+        println!("tlqlf");
         frames
     }
 
     fn window_settings() -> iced::window::Settings {
         iced::window::Settings {
             position: Position::Specific(Point::new(1000.0, 0.0)),
-            size: Size::new(150.0, 300.0),
+            size: Size::new(170.0, 190.0),
             transparent: true,
             decorations: false,
             resizable: false,
@@ -173,32 +174,21 @@ impl AppState {
     fn view(state: &'_ AppState) -> Element<'_, Message> {
         let frames = &state.frames;
         let frame = &frames[state.frame_idx];
-        let delay = frame.delay().numer_denom_ms().0;
+        // let delay = frame.delay().numer_denom_ms().0;
         let buffer = frame.buffer();
         let (w, h) = buffer.dimensions();
         let rgba = buffer.as_raw().clone();
         let handle = image::Handle::from_rgba(w, h, rgba);
-
-        // column![
-        // text(format!(
-        //     "keyboard pressed : {:?}, total : {:?}",
-        //     evdev::KeyCode::new(state.pressed),
-        //     state.cnt
-        // )),
-        //     image::Image::new(handle)
-        // ]
-        // .into()
-
         let k = format!(" {:?} ", state.cnt);
 
         let content = row![
             text(k)
-                .size(21.0)
+                .size(20.0)
                 .style(|_theme| iced::widget::text::Style {
                     color: Some(iced::Color::BLACK)
                 }),
             horizontal_space(),
-            button("SET")
+            button("||||")
                 .on_press(Message::OpenSetting)
                 .style(|_theme, _status| button::Style {
                     background: Some(Background::Color(Color::from_rgb(160.0, 160.0, 160.0,))),
@@ -208,22 +198,24 @@ impl AppState {
         ];
 
         column![
-            image::Image::new(handle),
-            container(content).style(|_| {
+            image::Image::new(handle)
+                .width(Length::Fixed(150.0))
+                .height(Length::Fixed(150.0)),
+            container(content).padding(2.0).style(|_| {
                 iced::widget::container::Style {
                     background: Some(iced::Background::Color(iced::Color::from_rgb(
                         160.0, 160.0, 160.0,
                     ))),
-                    border: Border {
-                        color: Color::from_rgb(10.0, 10.0, 20.0),
-                        width: 3.0,
-                        radius: Radius {
-                            top_left: 0.2,
-                            top_right: 0.2,
-                            bottom_right: 0.2,
-                            bottom_left: 0.2,
-                        },
-                    },
+                    // border: Border {
+                    //     color: Color::from_rgb(10.0, 10.0, 20.0),
+                    //     width: 10.0,
+                    //     radius: Radius {
+                    //         top_left: 0.2,
+                    //         top_right: 0.2,
+                    //         bottom_right: 0.2,
+                    //         bottom_left: 0.2,
+                    //     },
+                    // },
                     ..Default::default()
                 }
             })
